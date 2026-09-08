@@ -41,7 +41,9 @@ def build_options(account: accounts.Account) -> webdriver.EdgeOptions:
 def run_account(account: accounts.Account) -> bool:
 	"""Work one account. Returns whether the browser started."""
 	try:
+		logger.info("Starting Edge for %s using %s", account.name, account.user_data_dir)
 		driver = webdriver.Edge(options=build_options(account))
+		logger.info("Edge started; opening Microsoft Rewards")
 	except SessionNotCreatedException as exc:
 		# Chromium allows one process per user data directory. When the profile
 		# is already open the driver's copy exits during startup, and selenium
@@ -59,6 +61,7 @@ def run_account(account: accounts.Account) -> bool:
 
 	try:
 		rewards = rewards_tasks.RewardsTaskUtils(driver)
+		logger.info("Microsoft Rewards loaded; starting tasks")
 		rewards.complete_all_tasks()
 	finally:
 		try:
