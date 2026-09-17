@@ -26,6 +26,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import date, timedelta
+from constants import NOUNS_FILE
 
 TRENDS_URL = "https://trends.google.com/trending/rss?geo={geo}"
 WIKIPEDIA_URL = "https://en.wikipedia.org/api/rest_v1/feed/featured/{y}/{m:02d}/{d:02d}"
@@ -137,7 +138,7 @@ def wordlist_queries(count: int) -> list[str]:
 	never has to import the model client.
 	"""
 	try:
-		with open("nouns.txt", encoding="utf-8") as handle:
+		with open(NOUNS_FILE, encoding="utf-8") as handle:
 			nouns = [line.strip().lower() for line in handle if len(line.strip()) >= 3]
 	except OSError:
 		return []
